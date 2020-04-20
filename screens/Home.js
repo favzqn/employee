@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { Card } from 'react-native-paper';
+import { StyleSheet, Text, View, Image, FlatList } from 'react-native';
+import { Card, FAB } from 'react-native-paper';
 
 const Home=()=> {
     const data = [
@@ -8,10 +8,16 @@ const Home=()=> {
         {id:2,name:"Asta",position:"Web Developer"},
         {id:3,name:"Yami Sukehiro",position:"Android Developer"},
         {id:4,name:"Yuno",position:"iOS Developer"},
+        {id:5,name:"Charmy-paisen",position:"Food Magic"},
+        {id:6,name:"Gordon Agrippa",position:"Poison Magic"},
+        {id:7,name:"Grey",position:"Transformation Magic"},
+        {id:8,name:"Noelle Silver",position:"Water Magic"},
+        {id:9,name:"Mereoleona",position:"Fire Magic"},
+        {id:10,name:"Licht",position:"Light Magic"},
     ]
-    const renderList = data.map((item)=>{
+    const renderList = ((item)=>{
         return(
-            <Card style={styles.myCard} key={item.id}>
+            <Card style={styles.myCard}>
                 <View style={styles.cardView}> 
                     <Image
                     style={{width:60, height: 60, borderRadius:30}}
@@ -27,7 +33,20 @@ const Home=()=> {
     })
     return (
         <View>
-            { renderList }
+            <FlatList 
+            data={data}
+            renderItem={({item})=>{
+               return renderList(item)
+            }}
+            keyExtractor={item=>`${item.id}`}
+            />
+            <FAB
+                style={styles.fab}
+                small={false}
+                icon="plus"
+                theme={{colors:{accent:"#006aff"}}}
+                onPress={() => console.log('Pressed')}
+            />
         </View>
     )
 }
@@ -42,7 +61,13 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18,
-    }
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+    },
 })
 
 export default Home
