@@ -21,7 +21,15 @@ const CreateEmployee = () => {
                 aspect:[1,1],
                 quality:0.5
             })
-            console.log(data)
+
+            if(!data.cancelled){
+                let newFile = { 
+                uri:data.uri, 
+                type:`test/${data.uri.split(".")[1]}`, 
+                name:`test.${data.uri.split(".")[1]}` 
+            }
+                handleUpload(newFile)
+            }
         }else{
             Alert.alert("You need to give a permission")
         }
@@ -36,10 +44,33 @@ const CreateEmployee = () => {
                 aspect:[1,1],
                 quality:0.5
             })
-            console.log(data)
+            if(!data.cancelled){
+                let newFile = { 
+                uri:data.uri, 
+                type:`test/${data.uri.split(".")[1]}`, 
+                name:`test.${data.uri.split(".")[1]}` 
+            }
+                handleUpload(newFile)
+            }
         }else{
             Alert.alert("You need to give a permission")
         }
+    }
+
+    const handleUpload = (image) => {
+        const data = new FormData()
+        data.append('file',image)
+        data.append('upload_preset','employeeApp')
+        data.append('cloud_name','fauzanfathurrahman')
+
+        fetch('https://api.cloudinary.com/v1_1/fauzanfathurrahman/image/upload',{
+           method:"post",
+           body:data 
+        }).then(res=>res.json())
+        .then(data=>{
+            console.log(data)
+            setPicture(data.url)
+        })
     }
 
     return(
@@ -79,7 +110,7 @@ const CreateEmployee = () => {
             />
             <Button style={styles.inputStyle} 
             theme={theme}
-            icon="upload" mode="contained" onPress={() => setModal(true)}>
+            icon={picture==""?"upload":"check"} mode="contained" onPress={() => setModal(true)}>
                 Upload Image
             </Button>
             <Button style={styles.inputStyle} 
