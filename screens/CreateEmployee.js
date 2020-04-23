@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, Modal, Alert } from 'react-native';
+import { StyleSheet, Text, View, Modal, Alert, KeyboardAvoidingView } from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
-const CreateEmployee = () => {
+const CreateEmployee = ({navigation}) => {
     const [name, setName] = useState("")
     const [phone, setPhone] = useState("")
     const [email, setEmail] = useState("")
@@ -30,7 +30,8 @@ const CreateEmployee = () => {
         })
         .then(res=>res.json())
         .then(data=>{
-            console.log(data)
+            Alert.alert(`${data.name} Saved successfully`)
+            navigation.navigate("Home")
         })
     }
 
