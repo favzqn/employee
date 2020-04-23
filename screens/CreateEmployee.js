@@ -32,6 +32,8 @@ const CreateEmployee = ({navigation}) => {
         .then(data=>{
             Alert.alert(`${data.name} Saved successfully`)
             navigation.navigate("Home")
+        }).catch(err=>{
+            Alert.alert("Something went wrong..")
         })
     }
 
@@ -93,6 +95,8 @@ const CreateEmployee = ({navigation}) => {
         .then(data=>{
             setPicture(data.url)
             setModal(false)
+        }).catch(err=>{
+            Alert.alert("Error while uploading..")
         })
     }
 
