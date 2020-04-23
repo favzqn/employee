@@ -10,7 +10,29 @@ const CreateEmployee = () => {
     const [email, setEmail] = useState("")
     const [salary, setSalary] = useState("")
     const [picture, setPicture] = useState("")
+    const [position, setPosition] = useState("")
     const [modal, setModal] = useState(false)
+
+    const submitData = () => {
+        fetch("http://19a929ab.ngrok.io/send-data",{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                name,
+                phone,
+                email,
+                salary,
+                picture,
+                position
+            })
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data)
+        })
+    }
 
     const pickFromGallery = async () => {
         const {granted} = await Permissions.askAsync(Permissions.CAMERA_ROLL)
@@ -68,8 +90,8 @@ const CreateEmployee = () => {
            body:data 
         }).then(res=>res.json())
         .then(data=>{
-            console.log(data)
             setPicture(data.url)
+            setModal(false)
         })
     }
 
@@ -108,6 +130,14 @@ const CreateEmployee = () => {
             mode="outlined"
             onChangeText={text => setSalary(text) }
             />
+            <TextInput
+            label='Position'
+            style={styles.inputStyle}
+            value={position}
+            theme={theme}
+            mode="outlined"
+            onChangeText={text => setPosition(text) }
+            />
             <Button style={styles.inputStyle} 
             theme={theme}
             icon={picture==""?"upload":"check"} mode="contained" onPress={() => setModal(true)}>
@@ -115,7 +145,7 @@ const CreateEmployee = () => {
             </Button>
             <Button style={styles.inputStyle} 
             theme={theme}
-            icon="content-save" mode="contained" onPress={() => setModal(true)}>
+            icon="content-save" mode="contained" onPress={() => submitData()}>
                 Save
             </Button>
             <Modal
