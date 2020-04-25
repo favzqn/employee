@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, Image, FlatList, Alert } from 'react-native';
 import { Card, FAB } from 'react-native-paper';
+import {useSelector,useDispatch} from 'react-redux'
 
 const Home=({navigation})=> {
 
@@ -17,15 +18,25 @@ const Home=({navigation})=> {
     //     {_id:"10",name:"Licht",email:"licht@radyalabs.com",salary:"53453",phone:"08235254245",picture:"https://images.unsplash.com/flagged/photo-1578848151039-b8916d7c1c34?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=821&q=80", position:"Light Magic"},
     // ]
 
-    const [data,setData] = useState([])
-    const [loading, setLoading] = useState(true)
+    // const [data,setData] = useState([])
+    // const [loading, setLoading] = useState(true)
+    
+    const dispatch = useDispatch()
+    const {data,loading} = useSelector((state)=>{
+        return state
+    })
 
     const fetchData = () => {
         fetch("http://81448e17.ngrok.io/")
         .then(res=>res.json())
         .then(results=>{
-            setData(results)
-            setLoading(false)
+            
+            // setData(results)
+            // setLoading(false)
+
+            dispatch({type:"ADD_DATA", payload:results})
+            dispatch({type:"SET_LOADING", payload:false})
+
         }).catch(err=>{
             Alert.alert("Something went wrong..")
         })
