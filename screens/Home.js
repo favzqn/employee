@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import { StyleSheet, Text, View, Image, FlatList, Alert } from 'react-native';
 import { Card, FAB } from 'react-native-paper';
-import {useSelector,useDispatch} from 'react-redux'
+import {useSelector,useDispatch} from 'react-redux';
+import {myContext} from '../App';
 
 const Home=({navigation})=> {
 
@@ -20,14 +21,17 @@ const Home=({navigation})=> {
 
     // const [data,setData] = useState([])
     // const [loading, setLoading] = useState(true)
-    
-    const dispatch = useDispatch()
-    const {data,loading} = useSelector((state)=>{
-        return state
-    })
+
+    // const dispatch = useDispatch()
+    // const {data,loading} = useSelector((state)=>{
+    //     return state
+    // })
+
+    const {state, dispatch} = useContext(myContext);
+    const {data,loading} = state
 
     const fetchData = () => {
-        fetch("http://81448e17.ngrok.io/")
+        fetch("http://6fe65f96.ngrok.io/")
         .then(res=>res.json())
         .then(results=>{
             
