@@ -9,7 +9,7 @@ const Profile = (props) =>{
     const {_id,name,picture,phone,email,position,salary} = props.route.params.item
     console.log(_id)
     const deleteEmployee = ()=> {
-        fetch("http://19a929ab.ngrok.io/delete", {
+        fetch("http://81448e17.ngrok.io/delete", {
             method:"post",
             headers:{
                 'Content-Type':'application/json'
@@ -74,7 +74,12 @@ const Profile = (props) =>{
             <View style={{flexDirection:"row",justifyContent:"space-around",padding:10}}>
                 <Button
                 theme={theme}
-                icon="account-edit" mode="contained" onPress={() => console.log("true")}>
+                icon="account-edit" mode="contained" 
+                onPress={() => {
+                    props.navigation.navigate("Create", 
+                    {_id,name,picture,phone,email,position,salary})
+                }
+                }>
                     Edit
                 </Button>
 

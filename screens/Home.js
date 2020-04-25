@@ -21,7 +21,7 @@ const Home=({navigation})=> {
     const [loading, setLoading] = useState(true)
 
     const fetchData = () => {
-        fetch("http://19a929ab.ngrok.io/")
+        fetch("http://81448e17.ngrok.io/")
         .then(res=>res.json())
         .then(results=>{
             setData(results)

@@ -4,17 +4,38 @@ import { TextInput, Button } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
-const CreateEmployee = ({navigation}) => {
-    const [name, setName] = useState("")
-    const [phone, setPhone] = useState("")
-    const [email, setEmail] = useState("")
-    const [salary, setSalary] = useState("")
-    const [picture, setPicture] = useState("")
-    const [position, setPosition] = useState("")
+const CreateEmployee = ({navigation, route}) => {
+
+    const getDetails = (type) => {
+        if (route.params) {
+            switch (type) {
+                case "name":
+                    return route.params.name
+                case "phone":
+                    return route.params.phone
+                case "email":
+                    return route.params.email
+                case "salary":
+                    return route.params.salary
+                case "picture":
+                    return route.params.picture
+                case "position":
+                    return route.params.position
+            }
+        }
+        return ""
+    }
+
+    const [name, setName] = useState(getDetails("name"))
+    const [phone, setPhone] = useState(getDetails("phone"))
+    const [email, setEmail] = useState(getDetails("email"))
+    const [salary, setSalary] = useState(getDetails("salary"))
+    const [picture, setPicture] = useState(getDetails("picture"))
+    const [position, setPosition] = useState(getDetails("position"))
     const [modal, setModal] = useState(false)
 
     const submitData = () => {
-        fetch("http://19a929ab.ngrok.io/send-data",{
+        fetch("http://81448e17.ngrok.io/send-data",{
             method:"POST",
             headers:{
                 'Content-Type':'application/json'
@@ -31,6 +52,31 @@ const CreateEmployee = ({navigation}) => {
         .then(res=>res.json())
         .then(data=>{
             Alert.alert(`${data.name} Saved successfully`)
+            navigation.navigate("Home")
+        }).catch(err=>{
+            Alert.alert("Something went wrong..")
+        })
+    }
+
+    const updateDetails = () => {
+        fetch("http://81448e17.ngrok.io/update",{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                id: route.params._id,
+                name,
+                phone,
+                email,
+                salary,
+                picture,
+                position
+            })
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            Alert.alert(`${data.name} Updated successfully`)
             navigation.navigate("Home")
         }).catch(err=>{
             Alert.alert("Something went wrong..")
@@ -148,11 +194,21 @@ const CreateEmployee = ({navigation}) => {
             icon={picture==""?"upload":"check"} mode="contained" onPress={() => setModal(true)}>
                 Upload Image
             </Button>
+
+            {route.params?
+            <Button style={styles.inputStyle} 
+            theme={theme}
+            icon="content-save" mode="contained" onPress={() => updateDetails()}>
+                Update
+            </Button>
+            :
             <Button style={styles.inputStyle} 
             theme={theme}
             icon="content-save" mode="contained" onPress={() => submitData()}>
                 Save
             </Button>
+            }
+            
             <Modal
             animationType="slide"
             transparent={true}
